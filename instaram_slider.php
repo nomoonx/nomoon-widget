@@ -39,7 +39,7 @@ class noMoon_InstagramSlider extends WP_Widget {
 		);
 		
 		// Instgram Action to display images
-		add_action( 'jr_instagram', array( $this, 'instagram_images' ) );
+		add_action( 'nm_instagram', array( $this, 'instagram_images' ) );
 
 		// Enqueue Plugin Styles and scripts
 		add_action( 'wp_enqueue_scripts', array( $this,	'public_enqueue' ) );
@@ -298,7 +298,7 @@ class noMoon_InstagramSlider extends WP_Widget {
                                 for (var i = pictureList.length - 1; i >= 0; i--) {"."\n"."
                                     var picture=pictureList[i];"."\n"."
 									console.log(picture);"."\n"."
-									var element=\"<li><a href='\"+picture.link+\"'><img src='\"+picture.images.low_resolution.url+\"'/></a></li>\";"."\n"."
+									var element='<li><a href='\"+picture.link+\"'><img src='\"+picture.images.low_resolution.url+\"'/></a></li>\";"."\n"."
 									$('.instaslides').append(element);"."\n"."
 								};"."\n"."
 								$('.instaslider-nr-{$widget_id}').pllexislider({" . "\n" .
