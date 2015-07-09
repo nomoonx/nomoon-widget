@@ -110,7 +110,7 @@ class noMoon_InstagramSlider extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 		
-		do_action( 'jr_instagram', $instance );
+		do_action( 'nm_instagram', $instance );
 		
 		echo $after_widget;
 	}
