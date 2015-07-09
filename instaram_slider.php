@@ -298,7 +298,7 @@ class noMoon_InstagramSlider extends WP_Widget {
                                 for (var i = pictureList.length - 1; i >= 0; i--) {"."\n"."
                                     var picture=pictureList[i];"."\n"."
 									console.log(picture);"."\n"."
-									var element='<li><a href='\"+picture.link+\"'><img src='\"+picture.images.low_resolution.url+\"'/></a></li>\";"."\n"."
+									var element=\"<li><a href='\"+picture.link+\"'><img src='\"+picture.images.low_resolution.url+\"'/></a></li>\";"."\n"."
 									$('.instaslides').append(element);"."\n"."
 								};"."\n"."
 								$('.instaslider-nr-{$widget_id}').pllexislider({" . "\n" .
