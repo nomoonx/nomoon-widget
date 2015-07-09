@@ -16,7 +16,7 @@ add_action( 'widgets_init', array( 'noMoon_InstagramSlider', 'register_widget' )
 /**
  * JR_InstagramSlider Class
  */
-class JR_InstagramSlider extends WP_Widget {
+class noMoon_InstagramSlider extends WP_Widget {
 	
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
