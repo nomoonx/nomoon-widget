@@ -269,51 +269,55 @@ class noMoon_InstagramSlider extends WP_Widget {
 				$slider_script =
 				"<script type='text/javascript'>" . "\n" .
 				"	jQuery(document).ready(function($) {" . "\n" .
-                "       var instagramUsername={$username};". "\n" .
-				"	console.log(instagramUsername);"."\n" .
-				"	var searchUserIdUrl='https:\/\/api.instagram.com\/v1\/users\/search?q='+instagramUsername+'&client_id=44a3704cf42b4a2eb8329cba1054b450';"."\n" .
-				"	console.log(searchUserIdUrl);"."\n" .
-				"	$.ajax({url: searchUserIdUrl, dataType: 'jsonp',success: function(searchUserResult){"."\n" .
-                "       console.log('in');"."\n" .
-                "       console.log(searchUserResult.data);"."\n" .
-                "       var userId=null;"."\n" .
-                "       for (var i = searchUserResult.data.length - 1; i >= 0; i--) {"."\n".
-                "           var user=searchUserResult.data[i];"."\n".
-	            "			console.log(user);"."\n".
-				"			if(user.username==instagramUsername){"."\n"."
-                                userId=user.id;"."\n"."
-                                break;"."\n"."
+                "       var instagramUsername='{$username}';". "\n" .
+				"	    console.log(instagramUsername);"."\n" .
+				"	    var searchUserIdUrl='https:\/\/api.instagram.com\/v1\/users\/search?q='+instagramUsername+'&client_id=44a3704cf42b4a2eb8329cba1054b450';"."\n" .
+				"	    console.log(searchUserIdUrl);"."\n" .
+				"	    $.ajax({"."\n"."
+				            url: searchUserIdUrl,"."\n"."
+                            dataType: 'jsonp',"."\n"."
+                            success: function(searchUserResult){"."\n" .
+                "               console.log('in');"."\n" .
+                "               console.log(searchUserResult.data);"."\n" .
+                "               var userId=null;"."\n" .
+                    "           for (var i = searchUserResult.data.length - 1; i >= 0; i--) {"."\n".
+                "                   var user=searchUserResult.data[i];"."\n".
+	            "			        console.log(user);"."\n".
+                    "			    if(user.username==instagramUsername){"."\n"."
+                                        userId=user.id;"."\n"."
+                                        break;"."\n"."
+                                    }"."\n"."
+						        };"."\n"."
+						        console.log(userId);"."\n"."
+                                var userResentMediaUrl='https:\/\/api.instagram.com\/v1\/users\/'+userId+'\/media\/recent?client_id=44a3704cf42b4a2eb8329cba1054b450&count='+{$images_number};"."\n"."
+                                $.ajax({"."\n"."
+                                    url:userResentMediaUrl,"."\n"."
+                                    dataType: 'jsonp',"."\n"."
+                                    success: function(searchMediaResult){"."\n"."
+                                        console.log('media searched');"."\n"."
+                                        console.log(searchMediaResult);"."\n"."
+                                        var pictureList=searchMediaResult.data;"."\n"."
+                                        console.log(pictureList);"."\n"."
+                                        for (var i = pictureList.length - 1; i >= 0; i--) {"."\n"."
+                                           var picture=pictureList[i];"."\n"."
+                                           console.log(picture);"."\n"."
+                                          var element=\"<li><a href='\"+picture.link+\"'><img src='\"+picture.images.low_resolution.url+\"'/></a></li>\";"."\n"."
+                                           $('.instaslides').append(element);"."\n"."
+                                        };"."\n"."
+                                        $('.instaslider-nr-{$widget_id}').pllexislider({" . "\n" .
+                    "			            animation: '{$animation}'," . "\n" .
+                    "			            slideshowSpeed: {$slidespeed}," . "\n" .
+                    "			            directionNav: {$direction_nav}," . "\n" .
+                    "			            controlNav: {$control_nav}," . "\n" .
+                    "			            prevText: ''," . "\n" .
+                    "			            nextText: ''," . "\n" .
+                    "                       selector:'.instaslides > li'". "\n" ."
+                                        });"."\n"."
+                                    }"."\n"."
+                                });"."\n"."
                             }"."\n"."
-						};"."\n"."
-						console.log(userId);"."\n"."
-						var userResentMediaUrl='https:\/\/api.instagram.com\/v1\/users\/'+userId+'\/media\/recent?client_id=44a3704cf42b4a2eb8329cba1054b450&count='+{$images_number};"."\n"."
-						$.ajax({"."\n"."
-							url:userResentMediaUrl,"."\n"."
-							dataType: 'jsonp',"."\n"."
-							success: function(searchMediaResult){"."\n"."
-                                console.log('media searched');"."\n"."
-                                console.log(searchMediaResult);"."\n"."
-                                var pictureList=searchMediaResult.data;"."\n"."
-                                console.log(pictureList);"."\n"."
-                                for (var i = pictureList.length - 1; i >= 0; i--) {"."\n"."
-                                    var picture=pictureList[i];"."\n"."
-									console.log(picture);"."\n"."
-									var element=\"<li><a href='\"+picture.link+\"'><img src='\"+picture.images.low_resolution.url+\"'/></a></li>\";"."\n"."
-									$('.instaslides').append(element);"."\n"."
-								};"."\n"."
-								$('.instaslider-nr-{$widget_id}').pllexislider({" . "\n" .
-                "			        animation: '{$animation}'," . "\n" .
-                "			        slideshowSpeed: {$slidespeed}," . "\n" .
-                "			        directionNav: {$direction_nav}," . "\n" .
-                "			        controlNav: {$control_nav}," . "\n" .
-                "			        prevText: ''," . "\n" .
-                "			        nextText: ''," . "\n" .
-                "                   selector:'.instaslides > li'". "\n" ."
-					            });"."\n"."
-							}"."\n"."
-						});"."\n"."
-					}});"."\n".
-
+                        });"."\n"."
+                    });"."\n".
 				"</script>" . "\n";
 
 
