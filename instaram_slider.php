@@ -32,7 +32,7 @@ class noMoon_InstagramSlider extends WP_Widget {
 	public function __construct() {
 		
 		// Widget ID and Class Setup
-		parent::__construct( 'nm_insta_slider', __( 'Instagram Slider', 'nminstaslider' ), array(
+		parent::__construct( 'nm_insta_slider', __( 'noMoon Instagram Slider', 'nminstaslider' ), array(
 				'classname' => 'nm-insta-slider',
 				'description' => __( 'A widget that displays a slider with instagram images ', 'nminstaslider' ) 
 			) 
@@ -196,11 +196,7 @@ class noMoon_InstagramSlider extends WP_Widget {
 						<label class="jr-radio"><input type="radio" id="<?php echo $this->get_field_id( 'animation' ); ?>" name="<?php echo $this->get_field_name( 'animation' ); ?>" value="slide" <?php checked( 'slide', $instance['animation'] ); ?> /> <?php _e( 'Slide', 'nminstaslider' ); ?></label>  
 						<label class="jr-radio"><input type="radio" id="<?php echo $this->get_field_id( 'animation' ); ?>" name="<?php echo $this->get_field_name( 'animation' ); ?>" value="fade" <?php checked( 'fade', $instance['animation'] ); ?> /> <?php _e( 'Fade', 'nminstaslider' ); ?></label>
 					</p>
-					<p>
-						<label  for="<?php echo $this->get_field_id( 'caption_words' ); ?>"><?php _e( 'Number of words in caption:', 'nminstaslider' ); ?>
-							<input class="small-text" id="<?php echo $this->get_field_id( 'caption_words' ); ?>" name="<?php echo $this->get_field_name( 'caption_words' ); ?>" value="<?php echo $instance['caption_words']; ?>" />
-						</label>
-					</p>					
+
 					<p>
 						<label  for="<?php echo $this->get_field_id( 'slidespeed' ); ?>"><?php _e( 'Slide Speed:', 'nminstaslider' ); ?>
 							<input class="small-text" id="<?php echo $this->get_field_id( 'slidespeed' ); ?>" name="<?php echo $this->get_field_name( 'slidespeed' ); ?>" value="<?php echo $instance['slidespeed']; ?>" />
@@ -208,25 +204,10 @@ class noMoon_InstagramSlider extends WP_Widget {
 							<span class='jr-description'><?php _e('1000 milliseconds = 1 second', 'nminstaslider'); ?></span>
 						</label>
 					</p>					
-					<p>
-						<label for="<?php echo $this->get_field_id('description'); ?>"><?php _e( 'Slider Text Description:', 'nminstaslider' ); ?></label>
-						<select size=3 class='widefat' id="<?php echo $this->get_field_id('description'); ?>" name="<?php echo $this->get_field_name('description'); ?>[]" multiple="multiple">
-							<option class="<?php if ( 'hashtag' == $instance['search_for'] ) echo 'hidden'; ?>" value='username' <?php $this->selected( $instance['description'], 'username' ); ?>><?php _e( 'Username', 'nminstaslider'); ?></option>
-							<option value='time'<?php $this->selected( $instance['description'], 'time' ); ?>><?php _e( 'Time', 'nminstaslider'); ?></option> 
-							<option value='caption'<?php $this->selected( $instance['description'], 'caption' ); ?>><?php _e( 'Caption', 'nminstaslider'); ?></option> 
-						</select>
-						<span class="jr-description"><?php _e( 'Hold ctrl and click the fields you want to show/hide on your slider. Leave all unselected to hide them all. Default all selected.', 'nminstaslider') ?></span>
-					</p>					
+
 				</div>
 			</div>
-			<?php $widget_id = preg_replace( '/[^0-9]/', '', $this->id ); if ( $widget_id != '' ) : ?>
-			<p>
-				<label for="jr_insta_shortcode"><?php _e('Shortcode of this Widget:', 'nminstaslider'); ?></label>
-				<input id="jr_insta_shortcode" onclick="this.setSelectionRange(0, this.value.length)" type="text" class="widefat" value="[jr_instagram id=&quot;<?php echo $widget_id ?>&quot;]" readonly="readonly" style="border:none; color:black; font-family:monospace;">
-				<span class="jr-description"><?php _e( 'Use this shortcode in any page or post to display images with this widget configuration!', 'nminstaslider') ?></span>
-			</p>
-			<?php endif; ?>
-			<a target="_blank" title="Donate To Keep This Plugin Alive!" href="http://goo.gl/RZiu34"><p class="donate"><span></span>Donate To Keep This Plugin Alive!</p></a>        
+
 		</div>
 		<?php
 	}
@@ -270,7 +251,6 @@ class noMoon_InstagramSlider extends WP_Widget {
 		$images_number    = isset( $args['images_number'] ) ? absint( $args['images_number'] ) : 5;
 		$controls         = isset( $args['controls'] ) ? $args['controls'] : 'prev_next';
 		$animation        = isset( $args['animation'] ) ? $args['animation'] : 'slide';
-		$caption_words    = isset( $args['caption_words'] ) ? $args['caption_words'] : 100;
 		$slidespeed       = isset( $args['slidespeed'] ) ? $args['slidespeed'] : 7000;
 		$description      = isset( $args['description'] ) ? $args['description'] : array();
 		$widget_id        = isset( $args['widget_id'] ) ? $args['widget_id'] : preg_replace( '/[^0-9]/', '', $this->id );
@@ -353,134 +333,5 @@ class noMoon_InstagramSlider extends WP_Widget {
 		return $output;
 		
 	}
-
-	/**
-	 * Function to display Templates styles
-	 *
-	 * @param    string    $template
-	 * @param    array	   $args	    
-	 *
-	 * return mixed
-	 */
-	private function get_template( $template, $args ) {
-
-		$link_to   = isset( $args['link_to'] ) ? $args['link_to'] : false;
-		
-		if ( ( $args['search_for'] == 'user' && $args['attachment'] !== true && $args['source'] == 'instagram' ) || $args['search_for'] == 'hashtag' ) {
-			$caption   = $args['caption'];
-			$time      = $args['timestamp'];
-			$username  = $args['username'];
-			$image_url = $args['image'];
-		} else {
-			$attach_id = get_the_id();
-			$caption   = get_the_excerpt();
-			$time      = get_post_meta( $attach_id, 'jr_insta_timestamp', true );
-			$username  = get_post_meta( $attach_id, 'jr_insta_username', true );
-			$image_url = wp_get_attachment_image_src( $attach_id, $args['image_size'] );
-			$image_url = $image_url[0];
-		}
-
-		$short_caption = wp_trim_words( $caption, 10 );
-		$short_caption = preg_replace("/[^A-Za-z0-9?! ]/","", $short_caption);
-		$caption       = wp_trim_words( $caption, $args['caption_words'], $more = null );
-
-		$image_src = '<img src="' . $image_url . '" alt="' . $short_caption . '" title="' . $short_caption . '" />';
-		$image_output  = $image_src;
-
-		if ( $link_to ) {
-			$image_output  = '<a href="' . $link_to . '" target="_blank"';
-
-			if ( ! empty( $args['link_rel'] ) ) {
-				$image_output .= ' rel="' . $args['link_rel'] . '"';
-			}
-
-			if ( ! empty( $args['link_class'] ) ) {
-				$image_output .= ' class="' . $args['link_class'] . '"';
-			}
-			$image_output .= ' title="' . $short_caption . '">' . $image_src . '</a>';
-		}		
-
-		$output = '';
-		
-		// Template : Normal Slider
-		if ( $template == 'slider' ) {
-			
-			$output .= "<li>";
-
-				$output .= $image_output;
-
-				if ( is_array( $args['description'] ) && count( $args['description'] ) >= 1 ) { 
-					
-					$output .= "<div class='jr-insta-datacontainer'>\n";
-				
-						if ( $time && in_array( 'time', $args['description'] ) ) {
-							$time = human_time_diff( $time );
-							$output .= "<span class='jr-insta-time'>{$time} ago</span>\n";
-						}
-						if ( in_array( 'username', $args['description'] ) && $username ) {
-							$output .= "<span class='jr-insta-username'>by <a rel='nofollow' href='http://instagram.com/{$username}' target='_blank'>{$username}</a></span>\n";
-						}
-
-						if ( $caption != '' && in_array( 'caption', $args['description'] ) ) {
-							$caption   = preg_replace( '/@([a-z0-9_]+)/i', '&nbsp;<a href="http://instagram.com/$1" rel="nofollow" target="_blank">@$1</a>&nbsp;', $caption );
-							$caption = preg_replace( '/\#([a-zA-Z0-9_-]+)/i', '&nbsp;<a href="https://instagram.com/explore/tags/$1" rel="nofollow" target="_blank">$0</a>&nbsp;', $caption);						
-							$output   .= "<span class='jr-insta-caption'>{$caption}</span>\n";
-						}
-
-					$output .= "</div>\n";
-				}
-
-			$output .= "</li>";
-		
-		// Template : Slider with text Overlay on mouse over
-		} elseif ( $template == 'slider-overlay' ) {
-			
-			$output .= "<li>";
-			
-				$output .= $image_output;
-			
-				if ( is_array( $args['description'] ) && count( $args['description'] ) >= 1 ) {
-					
-					$output .= "<div class='jr-insta-wrap'>\n";
-
-						$output .= "<div class='jr-insta-datacontainer'>\n";
-
-							if ( $time && in_array( 'time', $args['description'] ) ) {
-								$time = human_time_diff( $time );
-								$output .= "<span class='jr-insta-time'>{$time} ago</span>\n";
-							}
-							
-							if ( in_array( 'username', $args['description'] ) && $username ) {
-								$output .= "<span class='jr-insta-username'>by <a rel='nofollow' target='_blank' href='http://instagram.com/{$username}'>{$username}</a></span>\n";
-							}
-
-							if ( $caption != '' && in_array( 'caption', $args['description'] ) ) {
-								$caption = preg_replace( '/@([a-z0-9_]+)/i', '&nbsp;<a href="http://instagram.com/$1" rel="nofollow" target="_blank">@$1</a>&nbsp;', $caption );
-								$caption = preg_replace( '/\#([a-zA-Z0-9_-]+)/i', '&nbsp;<a href="https://instagram.com/explore/tags/$1" rel="nofollow" target="_blank">$0</a>&nbsp;', $caption);								
-								$output .= "<span class='jr-insta-caption'>{$caption}</span>\n";
-							}
-
-						$output .= "</div>\n";
-
-					$output .= "</div>\n";
-				}
-			
-			$output .= "</li>";
-		
-		// Template : Thumbnails no text	
-		} elseif ( $template == 'thumbs' || $template == 'thumbs-no-border' ) {
-
-			$output .= "<li>";
-			$output .= $image_output;
-			$output .= "</li>";
-
-		} else {
-
-			$output .= 'This template does not exist!';
-		}
-
-		return $output;
-	}	
-
 	
-} // end of class JR_InstagramSlider
+} // end of class noMoon_InstagramSlider
